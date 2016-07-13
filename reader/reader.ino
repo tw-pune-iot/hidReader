@@ -1,8 +1,5 @@
-// For more information please refer to : www.pagemac.com
- 
-#include <SoftwareSerial.h>
-
 String url="http://10.131.125.74:8083/api/waterdispenser/consumption/new/internalNumber/";
+
 int buttonState = 0;
 long startMillis = 0;
 long stopMillis = 0;
@@ -12,8 +9,7 @@ long volume = 0;
 unsigned int cardLed = 10;
 unsigned int dispenserLed = 9;
 unsigned int sensor = 8;
-//SoftwareSerial bluetooth(rxPin, txPin); 
-#define bluetooth Serial 
+
 #define MAX_BITS 100                 // max number of bits 
 #define WEIGAND_WAIT_TIME  3000      // time to wait for another weigand pulse.  
  
@@ -52,7 +48,7 @@ void setup()
   pinMode(cardLed, OUTPUT);
   pinMode(dispenserLed, OUTPUT);
   
-  bluetooth.begin(9600);
+  Serial.begin(9600);
   digitalWrite(cardLed, LOW);
   digitalWrite(dispenserLed, LOW);
   
@@ -105,10 +101,7 @@ void loop()
  
       printBits();  
     }
-    else {
-     bluetooth.print("$*"); 
-    }
- 
+    
      // cleanup and get ready for the next card
      bitCount = 0;
      facilityCode = 0;
@@ -129,7 +122,7 @@ void printBits()
         url.concat("/consumption/");
         String vol = String(getVolume);
         url.concat(String(vol));
-        bluetooth.println(url);
+        Serial.println(url);
         url="http://10.131.125.74:8083/api/waterdispenser/consumption/new/internalNumber/";      
       
       }
@@ -166,3 +159,4 @@ int getvol(){
   
   return volume; 
 }
+
